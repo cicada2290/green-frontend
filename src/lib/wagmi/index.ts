@@ -1,5 +1,5 @@
-import { http, createConfig } from "wagmi";
-import { mainnet } from "wagmi/chains";
+import { http, createConfig } from 'wagmi'
+import { mainnet } from 'wagmi/chains'
 
 export const config = createConfig({
   chains: [mainnet],
@@ -8,10 +8,10 @@ export const config = createConfig({
   transports: {
     [mainnet.id]: http(),
   },
-});
+})
 
-declare module "wagmi" {
+declare module 'wagmi' {
   interface Register {
-    config: typeof config;
+    config: typeof config
   }
 }

@@ -1,16 +1,16 @@
 'use client'
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { WagmiProvider } from 'wagmi'
 
-import { config } from "@/lib/wagmi";
+import { config } from '@/lib/wagmi'
 import {
   DynamicContextProvider,
   EthereumWalletConnectors,
   DynamicWagmiConnector,
-} from "@/lib/dynamic";
+} from '@/lib/dynamic'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 const evmNetworks = [
   {
@@ -26,18 +26,20 @@ const evmNetworks = [
     },
     networkId: 97,
 
-    rpcUrls: ['https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5'],
+    rpcUrls: [
+      'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
+    ],
     vanityName: 'BNB Testnet',
   },
 ]
 
 const DynamicProvider: React.FC<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }> = ({ children }) => {
   return (
     <DynamicContextProvider
       settings={{
-        environmentId: "b4a79b14-9a41-4dbe-8425-174c937951eb",
+        environmentId: 'b4a79b14-9a41-4dbe-8425-174c937951eb',
         walletConnectors: [EthereumWalletConnectors],
         overrides: { evmNetworks },
       }}
@@ -51,4 +53,4 @@ const DynamicProvider: React.FC<{
   )
 }
 
-export default DynamicProvider;
+export default DynamicProvider

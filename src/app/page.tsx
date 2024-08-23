@@ -1,7 +1,3 @@
 export default function Home() {
-  return (
-    <main>
-      hoge
-    </main>
-  );
+  return <main>hoge</main>
 }

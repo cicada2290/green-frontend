@@ -1,5 +1,5 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
-import { DynamicWidget } from '@/lib/dynamic';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material'
+import { DynamicWidget } from '@/lib/dynamic'
 
 const Header: React.FC = () => {
   return (
@@ -20,4 +20,4 @@ const Header: React.FC = () => {
   )
 }
 
-export default Header;
+export default Header
