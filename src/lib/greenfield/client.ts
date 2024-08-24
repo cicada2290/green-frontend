@@ -12,6 +12,18 @@ export const getSps = async () => {
   return finalSps
 }
 
+export const getAllSps = async () => {
+  const sps = await getSps()
+
+  return sps.map((sp) => {
+    return {
+      address: sp.operatorAddress,
+      endpoint: sp.endpoint,
+      name: sp.description?.moniker,
+    }
+  })
+}
+
 export const selectSp = async () => {
   const finalSps = await getSps()
 

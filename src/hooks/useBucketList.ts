@@ -51,9 +51,6 @@ export const useBucketList = () => {
             const t = body
               .filter((item: any) => !item.removed)
               .map(async (item): Promise<Bucket> => {
-                const {
-                  bucket_info: { bucket_name },
-                } = item
                 return {
                   operator: item.operator,
                   offChainStatus: item.off_chain_status,
@@ -75,6 +72,7 @@ export const useBucketList = () => {
                     virtualPaymentAddress: item.vgf.virtual_payment_address,
                     globalVirtualGroupIds: item.vgf.global_virtual_group_ids,
                   },
+                  // BucketInfo
                   bucketInfo: {
                     id: item.bucket_info.id,
                     bucketName: item.bucket_info.bucket_name,
