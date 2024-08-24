@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { getBucketList } from '@/lib/greenfield'
 
-interface Bucket {
+export interface Bucket {
   operator: string
   offChainStatus: string
   storageSize: string
