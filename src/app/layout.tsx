@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google'
+import { Container } from '@mui/material'
 import DynamicProvider from '@/components/providers/DynamicProvider'
 import BiconomyProvider from '@/components/providers/BiconomyProvider'
 import Header from '@/components/layout/Header'
@@ -22,7 +23,9 @@ export default function RootLayout({
         <DynamicProvider>
           <BiconomyProvider>
             <Header />
-            {children}
+            <Container maxWidth="lg" sx={{ my: 10 }}>
+              {children}
+            </Container>
           </BiconomyProvider>
         </DynamicProvider>
       </body>

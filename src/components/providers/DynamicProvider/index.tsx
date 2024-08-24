@@ -31,6 +31,22 @@ const evmNetworks = [
     ],
     vanityName: 'BNB Testnet',
   },
+  {
+    blockExplorerUrls: ['https://testnet.greenfieldscan.com/'],
+    chainId: 5600,
+    chainName: 'Greenfield Mekong Testnet',
+    iconUrls: ['https://cryptologos.cc/logos/binance-coin-bnb-logo.png'],
+    name: 'Greenfield Mekong Testnet',
+    nativeCurrency: {
+      decimals: 18,
+      name: 'BNB',
+      symbol: 'tBNB',
+    },
+    networkId: 5600,
+
+    rpcUrls: ['https://gnfd-testnet-fullnode-tendermint-us.bnbchain.org	'],
+    vanityName: 'Greenfield Mekong Testnet',
+  },
 ]
 
 const DynamicProvider: React.FC<{
