@@ -1,3 +1,4 @@
+import { APP_NAME } from '@/config'
 import { AppBar, Box, Toolbar, Typography } from '@mui/material'
 import { DynamicWidget } from '@/lib/dynamic'
 
@@ -11,7 +12,7 @@ const Header: React.FC = () => {
       >
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            GREEN
+            {APP_NAME}
           </Typography>
           <DynamicWidget />
         </Toolbar>
