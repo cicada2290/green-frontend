@@ -1,7 +1,9 @@
 import { client, getRandomSp, forEach } from '.'
 import type { GetUserBucketsRequest } from '@bnb-chain/greenfield-js-sdk'
-import type { MsgCreateBucket, MsgDeleteBucket } from '@bnb-chain/greenfield-cosmos-types/greenfield/storage/tx'
-
+import type {
+  MsgCreateBucket,
+  MsgDeleteBucket,
+} from '@bnb-chain/greenfield-cosmos-types/greenfield/storage/tx'
 
 export const createBucket = async (params: MsgCreateBucket) => {
   return await client.bucket.createBucket(params)

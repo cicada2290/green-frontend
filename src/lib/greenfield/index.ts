@@ -2,6 +2,8 @@ export * from './client'
 export * from './bucket'
 export * from './object'
 export * from './offchainAuth'
+export * from './storage'
+export * from './tx'
 
 export const humpToLine = (name: string) => {
   return (

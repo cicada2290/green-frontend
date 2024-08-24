@@ -11,7 +11,7 @@ import {
 import ObjectListTable from './ObjectListTable'
 import { useObjectList } from '@/hooks/useObjectList'
 
-const BucketContent: React.FC<{bucketName: string}> = ({ bucketName }) => {
+const BucketContent: React.FC<{ bucketName: string }> = ({ bucketName }) => {
   const router = useRouter()
 
   const { list } = useObjectList(bucketName)

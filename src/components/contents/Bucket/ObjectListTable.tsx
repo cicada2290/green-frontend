@@ -31,22 +31,22 @@ const ObjectListTable: React.FC<{ list: any[] }> = ({ list }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-        {list.map((row) => (
-          <TableRow key={row.createTxHash}>
-            <TableCell component="th" scope="row">
-              {row.objectInfo.objectName}
-            </TableCell>
-            <TableCell component="th" scope="row">
-              {unixtimeToDate(row.updateAt)}
-            </TableCell>
-            <TableCell component="th" scope="row">
-              {unixtimeToDate(row.objectInfo.createAt)}
-            </TableCell>
-            <TableCell component="th" scope="row">
-              xxx
-            </TableCell>
-          </TableRow>
-        ))}
+          {list.map((row) => (
+            <TableRow key={row.createTxHash}>
+              <TableCell component="th" scope="row">
+                {row.objectInfo.objectName}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {unixtimeToDate(row.updateAt)}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {unixtimeToDate(row.objectInfo.createAt)}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                xxx
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

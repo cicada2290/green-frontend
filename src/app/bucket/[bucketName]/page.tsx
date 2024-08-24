@@ -11,9 +11,7 @@ const Bucket = ({ params }: { params: { bucketName: string } }) => {
 
   if (!primaryWallet) return router.push('/')
 
-  return (
-    <BucketContent bucketName={params.bucketName} />
-  )
+  return <BucketContent bucketName={params.bucketName} />
 }
 
 export default Bucket
