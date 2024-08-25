@@ -1,89 +1,117 @@
 'use client'
 
 import { useState } from 'react'
-import { unixtimeToDate, convertBytes } from '@/util'
+import { Controller, useForm } from 'react-hook-form'
 import {
-  IconButton,
-  Menu,
-  MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+  Unstable_Grid2 as Grid,
 } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { useBucketList } from '@/hooks/useBucketList'
+import { useCreateBucket } from '@/hooks/useCreateBucket'
+import BucketListTable from './BucketListTable'
+
+interface Form {
+  name: string
+}
 
 const HomeContent: React.FC = () => {
-  const { list, loading } = useBucketList()
+  const { loading: fetchLoading, list, fetchBucketList } = useBucketList()
+  const { loading: createLoading, handleCreate } = useCreateBucket()
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+  const { control, reset, handleSubmit } = useForm<Form>({})
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
+  const [openCreateBucketDialog, setOpenCreateBucketDialog] =
+    useState<boolean>(false)
+
+  const submit = async (data: Form) => {
+    try {
+      await handleCreate({
+        bucketName: data.name,
+      })
+      await fetchBucketList()
+      reset()
+      setOpenCreateBucketDialog(false)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
     <>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Bucket Name</TableCell>
-              <TableCell>Bucket Size</TableCell>
-              <TableCell>Data Updated</TableCell>
-              <TableCell>Data Created</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {list.map((row) => (
-              <TableRow key={row.createTxHash}>
-                <TableCell component="th" scope="row">
-                  {row.bucketInfo.bucketName}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {convertBytes(row.storageSize)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {unixtimeToDate(row.updateTime)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {unixtimeToDate(row.bucketInfo.createAt)}
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  <IconButton onClick={handleClick}>
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                  >
-                    <MenuItem>View Details</MenuItem>
-                    <MenuItem>Share</MenuItem>
-                    <MenuItem sx={{ color: 'red' }}>Delete</MenuItem>
-                  </Menu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid container spacing={2}>
+        <Grid xs={12}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+            Bucket
+          </Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Button
+            variant="contained"
+            disableElevation
+            color="success"
+            onClick={() => setOpenCreateBucketDialog(true)}
+          >
+            Create Bucket
+          </Button>
+          <Dialog
+            open={openCreateBucketDialog}
+            maxWidth="sm"
+            fullWidth
+            onClose={() => setOpenCreateBucketDialog(false)}
+          >
+            <DialogTitle>Create a Bucket</DialogTitle>
+            <DialogContent>
+              <Box sx={{ mt: 2 }}>
+                <Controller
+                  name="name"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: { value: true, message: 'Required' },
+                  }}
+                  render={({ field, formState: { errors } }) => (
+                    <TextField
+                      {...field}
+                      label="name"
+                      fullWidth
+                      variant="outlined"
+                      disabled={createLoading}
+                      error={errors.name ? true : false}
+                      helperText={errors.name?.message as string}
+                    />
+                  )}
+                />
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <LoadingButton
+                variant="contained"
+                disableElevation
+                loading={createLoading}
+                onClick={handleSubmit(submit)}
+              >
+                Create
+              </LoadingButton>
+            </DialogActions>
+          </Dialog>
+        </Grid>
+        <Grid xs={12}>
+          {fetchLoading ? (
+            <CircularProgress />
+          ) : (
+            <BucketListTable list={list} fetchBucketList={fetchBucketList} />
+          )}
+        </Grid>
+      </Grid>
     </>
   )
 }
