@@ -105,7 +105,7 @@ export const useBucketList = () => {
     if (address) {
       fetchBucketList()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address])
 
   return {

@@ -1,4 +1,5 @@
 export * from './client'
+export * from './cross'
 export * from './bucket'
 export * from './object'
 export * from './offchainAuth'

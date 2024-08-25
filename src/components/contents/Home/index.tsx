@@ -25,7 +25,7 @@ interface Form {
 
 const HomeContent: React.FC = () => {
   const { loading: fetchLoading, list, fetchBucketList } = useBucketList()
-  const { loading, handleCreate } = useCreateBucket()
+  const { loading: createLoading, handleCreate } = useCreateBucket()
 
   const { control, reset, handleSubmit } = useForm<Form>({})
 
@@ -84,7 +84,7 @@ const HomeContent: React.FC = () => {
                       label="name"
                       fullWidth
                       variant="outlined"
-                      disabled={loading}
+                      disabled={createLoading}
                       error={errors.name ? true : false}
                       helperText={errors.name?.message as string}
                     />
@@ -96,7 +96,7 @@ const HomeContent: React.FC = () => {
               <LoadingButton
                 variant="contained"
                 disableElevation
-                loading={loading}
+                loading={createLoading}
                 onClick={handleSubmit(submit)}
               >
                 Create
@@ -105,7 +105,11 @@ const HomeContent: React.FC = () => {
           </Dialog>
         </Grid>
         <Grid xs={12}>
-          {fetchLoading ? <CircularProgress /> : <BucketListTable list={list} />}
+          {fetchLoading ? (
+            <CircularProgress />
+          ) : (
+            <BucketListTable list={list} fetchBucketList={fetchBucketList} />
+          )}
         </Grid>
       </Grid>
     </>

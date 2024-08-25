@@ -8,6 +8,10 @@ import {
   Box,
   IconButton,
   Drawer,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Menu,
   MenuItem,
   List,
@@ -23,28 +27,49 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { useDeleteBucket } from '@/hooks/useDeleteBucket'
 import type { Bucket } from '@/hooks/useBucketList'
 
-const BucketListTable: React.FC<{ list: Bucket[] }> = ({ list }) => {
+const BucketListTable: React.FC<{
+  list: Bucket[]
+  fetchBucketList: () => {}
+}> = ({ list, fetchBucketList }) => {
   const router = useRouter()
+  const { loading: deleteLoading, handleDelete } = useDeleteBucket()
 
   const [bucket, setBucket] = useState<Bucket | null>(null)
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const [deletBucketDialog, setDeleteBucketDialog] = useState<boolean>(false)
+
   const open = Boolean(anchorEl)
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (
+    bucket: Bucket,
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    setBucket(bucket)
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
 
-  // ウインドウタブを新規で開いて、URLに遷移する関数
-  const handleOpenTab = (url: string) => {
-    window.open(url, '_blank')
+  const handleDeleteBucket = async () => {
+    try {
+      if (!bucket) return
+      await handleDelete({
+        bucketName: bucket.bucketInfo.bucketName,
+      })
+      await fetchBucketList()
+      setDeleteBucketDialog(false)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -75,7 +100,7 @@ const BucketListTable: React.FC<{ list: Bucket[] }> = ({ list }) => {
                 {unixtimeToDate(row.bucketInfo.createAt)}
               </TableCell>
               <TableCell component="th" scope="row">
-                <IconButton onClick={handleClick}>
+                <IconButton onClick={(event: any) => handleClick(row, event)}>
                   <MoreVertIcon />
                 </IconButton>
                 <Menu
@@ -93,7 +118,6 @@ const BucketListTable: React.FC<{ list: Bucket[] }> = ({ list }) => {
                 >
                   <MenuItem
                     onClick={() => {
-                      setBucket(row)
                       setDrawerOpen(true)
                       handleClose()
                     }}
@@ -107,8 +131,15 @@ const BucketListTable: React.FC<{ list: Bucket[] }> = ({ list }) => {
                   >
                     Edit
                   </MenuItem>
-                  <MenuItem>Share</MenuItem>
-                  <MenuItem sx={{ color: 'red' }}>Delete</MenuItem>
+                  <MenuItem
+                    sx={{ color: 'red' }}
+                    onClick={() => {
+                      setDeleteBucketDialog(true)
+                      handleClose()
+                    }}
+                  >
+                    Delete
+                  </MenuItem>
                 </Menu>
               </TableCell>
             </TableRow>
@@ -196,6 +227,29 @@ const BucketListTable: React.FC<{ list: Bucket[] }> = ({ list }) => {
           </List>
         </Box>
       </Drawer>
+      <Dialog
+        open={deletBucketDialog}
+        maxWidth="sm"
+        fullWidth
+        onClose={() => setDeleteBucketDialog(false)}
+      >
+        <DialogTitle>Fonfirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure to delete this bucket {bucket?.bucketInfo.bucketName}?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <LoadingButton
+            variant="contained"
+            disableElevation
+            loading={deleteLoading}
+            onClick={handleDeleteBucket}
+          >
+            Delete
+          </LoadingButton>
+        </DialogActions>
+      </Dialog>
     </TableContainer>
   )
 }
